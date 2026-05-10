@@ -2,57 +2,63 @@ package eldoria;
 
 import java.util.Objects;
 
-/**
- * Classe base para representar personagens do reino de Eldoria.
- * Aplica conceitos de encapsulamento, herança e polimorfismo.
- */
-public class abstract Personagem {
-    // Atributos privados (encapsulamento)
+public abstract class Personagem {
+    private String nome;
+    private String classe;
+    private int nivel;
+    private int pontosDeVida;
+    private double poderBase;
 
+    // Construtor completo
+    public Personagem(String nome, String classe, int nivel, int pontosDeVida, double poderBase) {
+        this.nome = nome;
+        this.classe = classe;
+        setNivel(nivel); // Usa o setter para validar
+        setPontosDeVida(pontosDeVida); // Usa o setter para validar
+        this.poderBase = poderBase;
+    }
 
-    // * Construtor que inicializa todos os atributos do personagem.
+    // Getters e Setters com validação
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    // Getters
+    public String getClasse() { return classe; }
+    public void setClasse(String classe) { this.classe = classe; }
 
-    // Setters com validações
+    public int getNivel() { return nivel; }
+    public void setNivel(int nivel) {
+        this.nivel = Math.max(nivel, 0); // Garante que não seja negativo
+    }
 
-    // * Criar métodos que define os pontos de vida do personagem.
+    public int getPontosDeVida() { return pontosDeVida; }
+    public void setPontosDeVida(int pontosDeVida) {
+        this.pontosDeVida = Math.max(pontosDeVida, 0); // Garante que não seja negativo
+    }
 
+    public double getPoderBase() { return poderBase; }
+    public void setPoderBase(double poderBase) { this.poderBase = poderBase; }
 
-    /**
-     * Criar método que define a habilidade do personagem.
-     * Deve ser sobrescrito pelas subclasses para implementar comportamentos específicos.
-     */
+    // Método abstrato para ser implementado pelas subclasses (Polimorfismo)
+    public abstract void usarHabilidade();
 
-
-
-    /**
-     * Sobrescrita do método toString() para exibir informações do personagem.
-     * @return String formatada com todos os atributos do personagem
-     */
+    // Sobrescrita de métodos herdados de Object
     @Override
     public String toString() {
-
+        return String.format("Nome: %s\nClasse: %s\nNível: %d\nPontos de Vida: %d\nPoder Base: %.1f", 
+                nome, classe, nivel, pontosDeVida, poderBase);
     }
 
-    /**
-     * Sobrescrita do método equals() para comparar personagens.
-     * Dois personagens são considerados iguais se tiverem o mesmo nome e classe.
-     * @param obj Objeto a ser comparado
-     * @return true se os personagens forem iguais, false caso contrário
-     */
     @Override
-    public boolean equals(Object obj) {
-
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Personagem that = (Personagem) o;
+        // Igualdade baseada em nome e classe conforme solicitado
+        return Objects.equals(nome, that.nome) && Objects.equals(classe, that.classe);
     }
 
-    /**
-     * Sobrescrita do método hashCode() para ser consistente com equals().
-     * @return Código hash baseado no nome e classe
-     */
     @Override
     public int hashCode() {
-
+        return Objects.hash(nome, classe);
     }
 }
-
